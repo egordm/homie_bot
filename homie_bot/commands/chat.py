@@ -41,27 +41,28 @@ async def on_chat_message(
 async def chat(
         ctx_msg: DiscordMessage,
 ):
-    with Session() as session:
-        context = await fetch_context(ctx_msg, session)
+    async with ctx_msg.channel.typing():
+        with Session() as session:
+            context = await fetch_context(ctx_msg, session)
 
-        context_new = pack_context(context, 7000)
+            context_new = pack_context(context, 7000)
 
-        messages = format_context(context_new)
-        messages = format_messages_buffer(messages)
+            messages = format_context(context_new)
+            messages = format_messages_buffer(messages)
 
-        completion = None
-        for _ in range(RETRY_COUNT):
-            completion = llm.invoke(messages).content
-            completion = clean(completion)
-            completion = completion.replace(f'{context.char}: ', '')
-            if completion:
-                break
+            completion = None
+            for _ in range(RETRY_COUNT):
+                completion = llm.invoke(messages).content
+                completion = clean(completion)
+                completion = completion.replace(f'{context.char}: ', '')
+                if completion:
+                    break
 
-        if not completion:
-            await ctx_msg.channel.send('!I am sorry, I cannot think of anything to say.')
-            return
+            if not completion:
+                await ctx_msg.channel.send('!I am sorry, I cannot think of anything to say.')
+                return
 
-        await ctx_msg.channel.send(completion)
+            await ctx_msg.channel.send(completion)
 
 
 def clean(msg: str) -> str:
