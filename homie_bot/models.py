@@ -37,5 +37,5 @@ class Lore(Base):
     server = Column(String(), primary_key=True)
     channel = Column(String(), primary_key=True)
 
-    names = Column(String())
+    names = Column(String(), primary_key=True)
     content = Column(Text())

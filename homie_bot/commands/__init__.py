@@ -5,6 +5,7 @@ from .regenerate import regenerate
 from .reset import reset
 from .purge import purge
 from .backstory import backstory_set, backstory
+from .roll import roll
 
 
 def init_commands(bot: Bot):
@@ -19,3 +20,4 @@ def init_commands(bot: Bot):
     bot.add_command(lore_list)
 
     bot.add_command(regenerate)
+    bot.add_command(roll)
