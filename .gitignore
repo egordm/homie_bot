@@ -1,0 +1,4 @@
+db.sqlite
+.env
+bots/*
+!bots/Homie
